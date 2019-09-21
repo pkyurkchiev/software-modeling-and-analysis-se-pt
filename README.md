@@ -5,5 +5,4 @@ This repository is part of the Software modeling and analysis course for Softwar
 ## Course roadmap: [link](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/blob/master/documentations/roadmap-sma.mup)
 
 
-#
 ### Weeks Schedule
