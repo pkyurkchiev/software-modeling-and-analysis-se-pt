@@ -1,0 +1,463 @@
+{
+  "formatVersion": 3,
+  "id": "root",
+  "ideas": {
+    "1": {
+      "title": "Software modeling and analysis",
+      "id": 1,
+      "attr": {
+        "position": [
+          -148,
+          -185,
+          1
+        ]
+      },
+      "ideas": {
+        "0.5": {
+          "title": "Lectures",
+          "id": 20,
+          "ideas": {
+            "1": {
+              "title": "Database model",
+              "id": 21,
+              "ideas": {
+                "19": {
+                  "title": "model",
+                  "id": 37,
+                  "attr": {
+                    "position": [
+                      78,
+                      -28.400001525878906,
+                      3
+                    ]
+                  },
+                  "ideas": {
+                    "1": {
+                      "title": "Conceptual Data Model",
+                      "id": 24,
+                      "attr": {
+                        "style": {
+                          "width": 158.2
+                        }
+                      },
+                      "ideas": {}
+                    },
+                    "2": {
+                      "title": "Logical Data Model",
+                      "id": 23,
+                      "attr": {
+                        "style": {
+                          "width": 158
+                        }
+                      },
+                      "ideas": {}
+                    },
+                    "3": {
+                      "title": "Physical Data Model",
+                      "id": 26,
+                      "attr": {
+                        "style": {
+                          "width": 159
+                        }
+                      }
+                    }
+                  }
+                },
+                "24": {
+                  "title": "Notations",
+                  "id": 33,
+                  "ideas": {
+                    "1": {
+                      "title": "UML Database Notation",
+                      "id": 34
+                    },
+                    "2": {
+                      "title": "Chen`s Database Notation",
+                      "id": 35
+                    },
+                    "3": {
+                      "title": "Crow`s Foot Database Notation",
+                      "id": 36
+                    }
+                  },
+                  "attr": {
+                    "position": [
+                      84,
+                      87.4000015258789,
+                      4
+                    ]
+                  }
+                }
+              }
+            },
+            "2": {
+              "title": "Database Normalization and Denormalization ",
+              "id": 25,
+              "attr": {}
+            },
+            "3": {
+              "title": "Data warehouse",
+              "id": 27,
+              "ideas": {
+                "1": {
+                  "title": "Multidimensional database",
+                  "id": 28,
+                  "attr": {}
+                },
+                "2": {
+                  "title": "Tabular database",
+                  "id": 29
+                }
+              }
+            },
+            "4": {
+              "title": "Data Flow Diagrams",
+              "id": 30
+            },
+            "5": {
+              "title": "NoSQL database",
+              "id": 31,
+              "attr": {}
+            },
+            "6": {
+              "title": "Business Intelligence",
+              "id": 32,
+              "attr": {}
+            }
+          }
+        },
+        "-10": {
+          "title": "Exercises",
+          "id": 3,
+          "attr": {
+            "position": [
+              227,
+              7.800000011920929,
+              1
+            ]
+          },
+          "ideas": {
+            "1": {
+              "title": "Back to the basics",
+              "id": 38,
+              "ideas": {}
+            },
+            "2": {
+              "title": "Database advance",
+              "id": 40,
+              "ideas": {
+                "1": {
+                  "title": "Trigger",
+                  "id": 43
+                },
+                "2": {
+                  "title": "Stored Procedure",
+                  "id": 44
+                },
+                "0.5": {
+                  "title": "Index",
+                  "id": 45,
+                  "attr": {}
+                }
+              }
+            },
+            "3": {
+              "title": "Power BI",
+              "id": 42
+            },
+            "1.5": {
+              "title": "Notations",
+              "id": 41,
+              "attr": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "title": "Software modeling and analysis",
+  "links": [],
+  "theme": {
+    "name": "MindMup Default",
+    "node": [
+      {
+        "name": "default",
+        "cornerRadius": 10,
+        "backgroundColor": "#E0E0E0",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#707070",
+            "width": 1,
+            "style": "solid"
+          }
+        },
+        "shadow": [
+          {
+            "color": "#070707",
+            "opacity": 0.4,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ],
+        "text": {
+          "margin": 5,
+          "alignment": "center",
+          "maxWidth": 146,
+          "color": "#4F4F4F",
+          "lightColor": "#EEEEEE",
+          "darkColor": "#000000",
+          "font": {
+            "lineSpacing": 4.5,
+            "lineSpacingPx": 6,
+            "size": 9,
+            "sizePx": 12,
+            "weight": "bold"
+          }
+        },
+        "connections": {
+          "default": {
+            "h": "center",
+            "v": "center"
+          },
+          "from": {
+            "horizontal": {
+              "h": "nearest-inset",
+              "v": "center"
+            }
+          },
+          "to": {
+            "h": "nearest",
+            "v": "center"
+          }
+        },
+        "decorations": {
+          "height": 20,
+          "edge": "top",
+          "overlap": true,
+          "position": "end",
+          "margin": 2,
+          "label": {
+            "border": 1,
+            "cornerRadius": 11,
+            "margin": 2,
+            "font": {
+              "lineSpacing": 0,
+              "lineSpacingPx": 0,
+              "size": 9,
+              "sizePx": 12,
+              "weight": "bold"
+            }
+          },
+          "cornerRadius": 12,
+          "backgroundColor": "#22aae0",
+          "opacity": 0.8,
+          "color": "#ffffff"
+        }
+      },
+      {
+        "name": "level_1",
+        "backgroundColor": "#22AAE0"
+      },
+      {
+        "name": "activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#22AAE0",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "level_1.activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#EEEEEE",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "selected",
+        "shadow": [
+          {
+            "color": "#000000",
+            "opacity": 0.9,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ]
+      },
+      {
+        "name": "collapsed",
+        "shadow": [
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 4
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          }
+        ]
+      },
+      {
+        "name": "collapsed.selected",
+        "shadow": [
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#555555",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 10
+            },
+            "radius": 0
+          },
+          {
+            "color": "#333333",
+            "offset": {
+              "width": 0,
+              "height": 11
+            },
+            "radius": 0
+          }
+        ]
+      }
+    ],
+    "connector": {
+      "default": {
+        "type": "quadratic",
+        "controlPoint": {
+          "above": {
+            "width": 0,
+            "height": 0.75
+          },
+          "below": {
+            "width": 0,
+            "height": 0.75
+          },
+          "horizontal": {
+            "width": 0,
+            "height": 0
+          }
+        },
+        "label": {
+          "position": {
+            "ratio": 0.5
+          },
+          "backgroundColor": "transparent",
+          "borderColor": "transparent",
+          "text": {
+            "color": "#4F4F4F",
+            "font": {
+              "size": 9,
+              "sizePx": 12,
+              "weight": "normal"
+            }
+          }
+        },
+        "line": {
+          "color": "#707070",
+          "width": 1
+        }
+      }
+    },
+    "link": {
+      "default": {
+        "line": {
+          "color": "red",
+          "lineStyle": "dashed",
+          "width": 1
+        },
+        "label": {
+          "position": {
+            "ratio": 0.5
+          },
+          "backgroundColor": "#FFFFFF",
+          "borderColor": "#FFFFFF",
+          "text": {
+            "color": "#4F4F4F",
+            "font": {
+              "size": 9,
+              "sizePx": 12,
+              "weight": "normal"
+            }
+          }
+        }
+      }
+    }
+  }
+}
