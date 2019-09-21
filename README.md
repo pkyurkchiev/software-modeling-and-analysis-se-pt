@@ -2,10 +2,7 @@
 This repository is part of the Software modeling and analysis course for Software Engineering part time learning of Plovdiv University
 
 
-## Course roadmap [Link](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/blob/master/documentations/roadmap-sma.mup)
-
-
-## Course assignment
+## Course roadmap: [link](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/blob/master/documentations/roadmap-sma.mup)
 
 
 #
