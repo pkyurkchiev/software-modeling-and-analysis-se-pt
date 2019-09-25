@@ -25,3 +25,6 @@ Thanks to all
   * presentations - [Multidimensional Data Model - p10](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-10.pdf),
  [Tabular Database - p11](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-11.pdf),
  [NoSQL Database Model - p12](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-12.pdf), [Business Intelligence - p13](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-13.pdf)
+
+* Fourth day:
+  * exercises - [Rent A Car - database, Bank Model - chens notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/01/)
