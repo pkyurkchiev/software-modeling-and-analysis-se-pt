@@ -1,0 +1,2 @@
+## Change db owner
+ALTER AUTHORIZATION ON DATABASE::RentACar TO sa;
