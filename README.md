@@ -30,10 +30,10 @@ This repository is part of the Software modeling and analysis course for Softwar
  [NoSQL Database Model - p12](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-12.pdf), [Business Intelligence - p13](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-13.pdf)
 
 * Fourth day:
-  * exercises - [Rent A Car - database, Bank Model - chens notation, Git Disctirubtion - chens notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/01/)
+  * exercises - [Rent A Car - database, Bank - chens notation, Git Disctirubtion - chens notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/01/)
   
 * Fifth day:
-  * exercises - [Rent A Car - trigers and stored procedure, Bank Model - crows foot notation, Git Disctirubtion - crows foot notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/02/)
+  * exercises - [Rent A Car - trigers and stored procedure, Bank - crows foot notation, Git Disctirubtion - crows foot notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/02/)
   
 * Six day:
   * exercises - [Power BI - mfi example](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/03/)
