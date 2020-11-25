@@ -35,7 +35,7 @@ This repository is part of the Software modeling and analysis course for Softwar
 * Third day:
   * presentations - [Multidimensional Data Model - p10](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-10.pdf),
  [Tabular Database - p11](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-11.pdf),
- [NoSQL Database Model - p12](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-13.pdf), [Business Intelligence - p13](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-13.pdf)
+ [NoSQL Database Model - p13](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-13.pdf), [Business Intelligence - p14](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/presentations/Lecture-14.pdf)
 
 * Fourth day:
   * exercises - [Rent A Car - database, Bank - chens notation, Git Disctirubtion - chens notation](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/01/)
