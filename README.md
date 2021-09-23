@@ -38,7 +38,7 @@ This repository is part of the Software modeling and analysis course for Softwar
   * exercises - [Bank - chens & crows notations, Git - chens & crows notations](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/01/)
   
 * Fifth day:
-  * exercises - [Database: Stored procedures and Triggers ](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/02/)
+  * exercises - [Database: Basic, Stored procedures and Triggers ](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/02/)
   
 * Six day:
   * exercises - [Database: Functions and Views, UML notation, Power BI - mfi Country by PPP example](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/tree/master/exercises/03/)
