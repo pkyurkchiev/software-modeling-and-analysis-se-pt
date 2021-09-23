@@ -18,14 +18,14 @@ RETURNS money
 AS
 BEGIN
 	DECLARE @return_value money;
-	SELECT @return_value = @Amount;
+	SET @return_value = @Amount;
 
 	IF (@CurrencyID = 1)
-		SELECT @return_value = @Amount * 1.66624;
+		SET @return_value = @Amount * 1.66624;
 	IF (@CurrencyID = 2)
-		SELECT @return_value = @Amount * 1.95583;
+		SET @return_value = @Amount * 1.95583;
 	IF (@CurrencyID = 3)
-		SELECT @return_value = @Amount * 1.95583;
+		SET @return_value = @Amount * 1.95583;
 
 	RETURN @return_value;
 END
