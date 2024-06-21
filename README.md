@@ -22,7 +22,7 @@ Upon successful completion of this course, participants will:
 The course is structured into several key sections, each focusing on a different aspect of data modeling. The sections are designed to be followed in order.
 * [Course Roadmap](https://miro.com/app/board/uXjVO845q9I=/)
 
-## Getting Started
+### Getting Started
 To get started with the course, clone this repository and follow the instructions in each section. If you have any questions or run into any issues, please open an issue and we'll do our best to help.
 * [Exercises need tools](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/blob/master/documentations/tools.md)
 * [Change db owner](https://github.com/pkyurkchiev/software-modeling-and-analysis-se-pt/blob/master/documentations/change-db-owner.md)
