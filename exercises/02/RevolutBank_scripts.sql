@@ -169,7 +169,6 @@ AS
 		ROLLBACK TRANSACTION;
 	END
 END
-
 GO
 
 INSERT INTO [Cards].[Cards]
@@ -227,16 +226,22 @@ ON [Accounts].[Accounts]
 AFTER INSERT
 AS
 BEGIN
-	INSERT INTO [Accounts].[Transactions]
-		([AccountId]
-		,[ReceiverIBAN]
-		,[Amount]
-		,[CreatedOn])
-	SELECT AccountId
-   	 , 'BG18REVLL122223233'
-   	 , 5
-   	 , GETDATE()
-	FROM INSERTED;
+	IF (EXISTS (SELECT * 
+					 FROM INFORMATION_SCHEMA.TABLES 
+					 WHERE TABLE_SCHEMA = 'Accounts' 
+					 AND  TABLE_NAME = 'Transactions'))
+	BEGIN
+		INSERT INTO [Accounts].[Transactions]
+			([AccountId]
+			,[ReceiverIBAN]
+			,[Amount]
+			,[CreatedOn])
+		SELECT AccountId
+		 , 'BG18REVLL122223233'
+		 , 5
+		 , GETDATE()
+		FROM INSERTED;
+	END
 END
 GO
 
