@@ -40,14 +40,12 @@ This repository contains a simplified SQL schema for modeling a YouTube-like sys
 ### Diagram
 
 - Chen's Notation Diagram
-![Chen's Notation Diagram.png](Chen%27s%20Notation%20Diagram.png)
+![Chen'sNotationDiagram.png](Chen%27sNotationDiagram.png)
 
 
-
-- Crow's Notation Diagram
-![Crow's Notation Diagram.png](Crow%27s%20Notation%20Diagram.png)
-
+- Crow's Foot Notation Diagram
+![Crow'sFootNotationDiagram.png](Crow%27sFootNotationDiagram.png)
 
 
 - Data Warehouse Diagram
-![YoutubeDataWarehouseDiagram.drawio.png](YoutubeDataWarehouseDiagram.drawio.png)
+![DataWarehouseDiagram.png](DataWarehouseDiagram.png)
