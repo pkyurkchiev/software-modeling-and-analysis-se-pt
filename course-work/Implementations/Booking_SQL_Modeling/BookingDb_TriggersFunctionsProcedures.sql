@@ -2,7 +2,6 @@ USE BookingDB
 GO
 
 ----------------- UpdateFullName ------------------
-
 CREATE TRIGGER trg_UpdateFullName
 ON UserManagement.Users
 AFTER INSERT, UPDATE
@@ -12,6 +11,42 @@ BEGIN
     SET FullName = CONCAT(UserManagement.Users.FirstName, ' ', UserManagement.Users.LastName)
     FROM inserted
     WHERE Users.ID = inserted.ID;
+END
+GO
+
+----------------- UpdateBookingStatusOnPayment ------------------
+CREATE TRIGGER trg_UpdateBookingStatusOnPayment
+ON HistoryManagement.BookingPaymentHistory
+AFTER INSERT
+AS
+BEGIN
+    UPDATE BookingManagement.Bookings
+    SET BookingStatusId = 2 
+    WHERE ID IN (SELECT BookingId FROM inserted);
+END
+GO
+
+----------------- UpdateCarRentalStatusOnPayment ------------------
+CREATE TRIGGER trg_UpdateCarRentalStatusOnPayment
+ON HistoryManagement.CarRentalPaymentHistory
+AFTER INSERT
+AS
+BEGIN
+    UPDATE TransportManagement.CarRentals
+    SET RentalStatusId = 2
+    WHERE ID IN (SELECT CarRentalId FROM inserted);
+END
+GO
+
+----------------- UpdateFlightBookingStatusOnPayment ------------------
+CREATE TRIGGER trg_UpdateFlightBookingStatusOnPayment
+ON HistoryManagement.FlightBookingPaymentHistory
+AFTER INSERT
+AS
+BEGIN
+    UPDATE BookingManagement.FlightBookings
+    SET BookingStatusId = 2
+    WHERE ID IN (SELECT BookingStatusId FROM inserted);
 END
 GO
 
@@ -44,8 +79,6 @@ BEGIN
 	END
 END
 GO
-
-
 
 ----------------- FUNCTIONS ---------------------
 
@@ -120,8 +153,6 @@ GO
 
 SELECT dbo.fn_GetPropertyRatingAverage(2) AS AverageRating;
 GO
-
-
 
 
 ----------------- STORED PROCEDURES ---------------------
