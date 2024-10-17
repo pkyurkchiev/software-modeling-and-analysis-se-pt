@@ -331,3 +331,4 @@ ASALocalRun/
 
 # raw documents
 raw-documents/
+*.bkp
