@@ -171,14 +171,15 @@ EXEC sp_GetPropertyAmenities @PropertyId = 3
 GO
 
 ----------------- CreateBooking ------------------
-CREATE PROCEDURE BookingManagement.CreateBooking
+Create PROCEDURE BookingManagement.CreateBooking
     @UserId INT,
     @CheckInDate DATE,
     @CheckOutDate DATE,
     @NumberOfPeople INT,
     @RoomId INT,
     @Discount DECIMAL(10, 2) = 0, 
-	@GuestName nvarchar(50)
+	@GuestName nvarchar(50),
+	@PaymentMethodId INT
 AS
 BEGIN
     DECLARE @TotalAmount DECIMAL(10, 2);
@@ -205,17 +206,16 @@ BEGIN
     SET @TotalAmount = (@PricePerNight * @Days) - @Discount;
 
     BEGIN TRANSACTION;
-
     BEGIN TRY
 		DECLARE @BookingId INT;
 
-        INSERT INTO BookingManagement.Bookings (UserId, CheckInDate, CheckOutDate, NumberOfPeople, TotalAmount, Discount)
-        OUTPUT INSERTED.ID INTO @BookingId
-        VALUES (@UserId, @CheckInDate, @CheckOutDate, @NumberOfPeople, @TotalAmount, @Discount);
+        INSERT INTO BookingManagement.Bookings (UserId, CheckInDate, CheckOutDate, NumberOfPeople, TotalAmount, BookingStatusId,PaymentMethodId, Discount)
+        VALUES (@UserId, @CheckInDate, @CheckOutDate, @NumberOfPeople, @TotalAmount, 1,  @PaymentMethodId, @Discount);
 
-        INSERT INTO BookingManagement.BookingDetail (BookingId, RoomId, GuestName, TotalPrice)
-        VALUES (@BookingId, @RoomId, @GuestName, @TotalAmount);
+		set @BookingId = SCOPE_IDENTITY();
 
+		INSERT INTO BookingManagement.BookingDetail (BookingId, RoomId, GuestName, TotalPrice)
+		VALUES (@BookingId, @RoomId, @GuestName, @TotalAmount);
         COMMIT TRANSACTION;
 		RETURN 1;
     END TRY
@@ -225,8 +225,9 @@ BEGIN
     END CATCH
 END;
 
-EXEC BookingManagement.CreateBooking @UserId = 1, @CheckInDate = '2024-10-20', @CheckOutDate = '2024-10-25', @NumberOfPeople = 2, @RoomId = 1, @Discount = 10.00, @GuestName = 'Petq Chalumova';
+EXEC BookingManagement.CreateBooking @UserId = 1, @CheckInDate = '2024-10-20', @CheckOutDate = '2024-10-25', @NumberOfPeople = 2, @RoomId = 1, @Discount = 10.00, @GuestName = 'Petq Chalumova', @PaymentMethodId = 1;
 GO
+
 ----------------- GetUserBookingHistory ------------------
 CREATE PROCEDURE BookingManagement.GetUserBookingHistory
     @UserId INT
@@ -259,7 +260,7 @@ BEGIN
         b.UserId = @UserId
     ORDER BY 
         b.CreatedAt DESC;
-END;
+END
 GO
 
 EXEC BookingManagement.GetUserBookingHistory @UserId = 1;
@@ -284,7 +285,7 @@ BEGIN
 END
 GO
 
-EXEC sp_UpdateBookingStatus @BookingId = 10, @NewStatusId = 2;  
+EXEC sp_UpdateBookingStatus @BookingId = 2, @NewStatusId = 2;  
 GO
 
 ----------------- GetPropertyDetails ------------------
@@ -296,8 +297,7 @@ BEGIN
         P.ID AS PropertyId,
         P.Name,
         P.Description,
-        P.PricePerNight,
-        P.MaxGuests,
+		PT.Type,
         L.City,
         L.Country,
         R.Rating,
@@ -306,6 +306,8 @@ BEGIN
         PropertyManagement.Properties P
     JOIN 
         LocationManagement.Locations L ON P.LocationId = L.ID
+	JOIN 
+		PropertyManagement.PropertyTypes pt ON PT.ID = P.PropertyTypeId
     LEFT JOIN 
         PropertyManagement.Reviews R ON P.ID = R.PropertyId
     WHERE 
@@ -314,4 +316,45 @@ END
 GO
 
 EXEC sp_GetPropertyDetails @PropertyId = 2;
+GO
+
+
+----------------- DeleteUser ------------------
+
+CREATE PROCEDURE sp_DeleteUser
+    @UserId INT
+AS
+BEGIN
+	DELETE h
+	FROM HistoryManagement.BookingPaymentHistory h
+	JOIN BookingManagement.Bookings b ON h.BookingId = b.ID
+	WHERE b.UserId = @UserId;
+	DELETE bd
+	FROM BookingManagement.BookingDetail bd
+	JOIN BookingManagement.Bookings b ON bd.BookingId = b.ID
+	WHERE b.UserId = @UserId;
+    DELETE FROM BookingManagement.Bookings WHERE UserId = @UserId
+	DELETE FROM PropertyManagement.Properties WHERE HostId = @UserId
+	DELETE FROM UserManagement.Favorites WHERE UserId = @UserId
+	DELETE FROM PropertyManagement.Reviews WHERE UserId = @UserId
+	DELETE h
+	FROM HistoryManagement.FlightBookingPaymentHistory h
+	JOIN BookingManagement.FlightBookings b ON h.FlightBookingId = b.ID
+	WHERE b.UserId = @UserId;
+	DELETE FROM BookingManagement.FlightBookings where UserId = @UserId
+	DELETE h
+	FROM HistoryManagement.TaxiBookingPaymentHistory h
+	JOIN BookingManagement.TaxiBookings b ON h.TaxiBookingId = b.ID
+	WHERE b.UserId = @UserId;
+	DELETE FROM BookingManagement.TaxiBookings where UserId = @UserId
+	DELETE h
+	FROM HistoryManagement.CarRentalPaymentHistory h
+	JOIN TransportManagement.CarRentals b ON h.CarRentalId = b.ID
+	WHERE b.UserId = @UserId;
+	DELETE FROM TransportManagement.CarRentals where UserId = @UserId
+	DELETE FROM UserManagement.Users WHERE ID = @UserId
+END
+GO
+
+EXEC sp_DeleteUser @UserId = 9;
 GO
