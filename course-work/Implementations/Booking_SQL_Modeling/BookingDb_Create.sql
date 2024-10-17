@@ -35,7 +35,7 @@ Create table [UserManagement].[Users]
     Username nvarchar(50) not null unique,
     Email nvarchar(100) not null unique,
     [Password] nvarchar(255) not null,
-    FullName as concat(FirstName, LastName),
+    FullName nvarchar(100),
     PhoneNumber nvarchar(10),
     IsHost tinyint not null default (0),
     CreatedAt datetime default current_timestamp,

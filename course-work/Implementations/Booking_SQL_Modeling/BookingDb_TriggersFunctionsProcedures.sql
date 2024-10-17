@@ -1,69 +1,15 @@
------------------ TRIGGERS ---------------------
-
------------------ AfterUserDelete ------------------
-CREATE TRIGGER TR_AfterUserDelete
-ON UserManagement.Users
-AFTER DELETE
-AS 
-BEGIN
-    DELETE FROM BookingManagement.Bookings WHERE UserId in (select ID from deleted)
-	DELETE FROM PropertyManagement.Properties WHERE HostId in (select ID from deleted)
-	DELETE FROM UserManagement.Favorites WHERE UserId in (select ID from deleted)
-	DELETE FROM PropertyManagement.Reviews WHERE UserId in (select ID from deleted)
-	DELETE FROM BookingManagement.FlightBookings where UserId in (select ID from deleted)
-	DELETE FROM BookingManagement.TaxiBookings where UserId in (select ID from deleted)
-	DELETE FROM TransportManagement.CarRentals where UserId in (select ID from deleted)
-END
+USE BookingDB
 GO
-
------------------ AfterBookingDelete ------------------
-CREATE TRIGGER TR_AfterBookingDelete
-ON BookingManagement.Bookings
-AFTER DELETE
-AS 
-BEGIN
-    DELETE FROM HistoryManagement.BookingPaymentHistory WHERE BookingId in (select ID from deleted)
-END
-
------------------ AfterFlightBookingDelete ------------------
-GO
-CREATE TRIGGER TR_AfterFlightBookingDelete
-ON BookingManagement.FlightBookings
-AFTER DELETE
-AS 
-BEGIN
-    DELETE FROM HistoryManagement.FlightBookingPaymentHistory WHERE FlightBookingId in (select ID from deleted)
-END
-
------------------ AfterCarRentalDelete ------------------
-GO
-CREATE TRIGGER TR_AfterCarRentalDelete
-ON TransportManagement.CarRentals
-AFTER DELETE
-AS 
-BEGIN
-    DELETE FROM HistoryManagement.CarRentalPaymentHistory WHERE CarRentalId in (select ID from deleted)
-END
-
------------------ AfterBookingDelete ------------------
-GO
-CREATE TRIGGER TR_AfterTaxiBookingDelete
-ON BookingManagement.TaxiBookings
-AFTER DELETE
-AS 
-BEGIN
-    DELETE FROM HistoryManagement.TaxiBookingPaymentHistory WHERE TaxiBookingId in (select ID from deleted)
-END
 
 ----------------- UpdateFullName ------------------
-GO
+
 CREATE TRIGGER trg_UpdateFullName
 ON UserManagement.Users
 AFTER INSERT, UPDATE
 AS
 BEGIN
     UPDATE UserManagement.Users
-    SET FullName = CONCAT(FirstName, ' ', LastName)
+    SET FullName = CONCAT(UserManagement.Users.FirstName, ' ', UserManagement.Users.LastName)
     FROM inserted
     WHERE Users.ID = inserted.ID;
 END
@@ -98,6 +44,8 @@ BEGIN
 	END
 END
 GO
+
+
 
 ----------------- FUNCTIONS ---------------------
 
@@ -146,7 +94,10 @@ BEGIN
     END
 
     RETURN @IsAvailable;
-END;
+END
+GO
+
+SELECT BookingManagement.fn_CheckRoomAvailability(1, '2024-11-05', '2024-11-10') AS IsAvailable;
 GO
 
 ----------------- fn_GetPropertyRatingAverage ------------------
@@ -167,8 +118,11 @@ BEGIN
 END
 GO
 
-SELECT dbo.fn_GetPropertyRatingAverage(1) AS AverageRating;
+SELECT dbo.fn_GetPropertyRatingAverage(2) AS AverageRating;
 GO
+
+
+
 
 ----------------- STORED PROCEDURES ---------------------
 
@@ -183,16 +137,22 @@ BEGIN
 END
 GO
 
------------------ UpdatePropertyPrice ------------------
-CREATE PROCEDURE sp_UpdatePropertyPrice
-    @PropertyId INT,
+EXEC sp_GetUserBookings @UserId = 1
+GO
+
+----------------- UpdateRoomPrice ------------------
+CREATE PROCEDURE sp_UpdateRoomPrice
+    @RoomId INT,
     @NewPrice DECIMAL(10, 2)
 AS
 BEGIN
-    UPDATE PropertyManagement.Properties
+    UPDATE PropertyManagement.Rooms
     SET PricePerNight = @NewPrice
-    WHERE ID = @PropertyId;
+    WHERE ID = @RoomId;
 END
+GO
+
+EXEC sp_UpdateRoomPrice @RoomId = 1, @NewPrice = 110.00
 GO
 
 ----------------- GetPropertyAmenities ------------------
@@ -205,6 +165,9 @@ BEGIN
     JOIN PropertyManagement.Amenities a ON pa.AmenityId = a.ID
     WHERE pa.PropertyId = @PropertyId;
 END
+GO
+
+EXEC sp_GetPropertyAmenities @PropertyId = 3
 GO
 
 ----------------- CreateBooking ------------------
