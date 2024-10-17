@@ -50,6 +50,18 @@ BEGIN
 END
 GO
 
+----------------- UpdateTaxiBookingStatusOnPayment ------------------
+CREATE TRIGGER trg_UpdateTaxiBookingStatusOnPayment
+ON HistoryManagement.TaxiBookingPaymentHistory
+AFTER INSERT
+AS
+BEGIN
+    UPDATE BookingManagement.TaxiBookings
+    SET BookingStatusId = 2
+    WHERE ID IN (SELECT BookingStatusId FROM inserted);
+END
+GO
+
 ----------------- PreventDeleteProperty ------------------
 CREATE TRIGGER trg_PreventDeleteProperty
 ON PropertyManagement.Properties
