@@ -86,13 +86,6 @@ Create table [BookingManagement].[BookingStatus]
 )
 GO
 
-Insert into [BookingManagement].[BookingStatus] 
-values
-('Pending'),
-('Confirmed'),
-('Cancelled')
-GO
-
 ----------------- [PaymentManagement].[PaymentMethods] ------------------
 Create table [PaymentManagement].[PaymentMethods] 
 (
