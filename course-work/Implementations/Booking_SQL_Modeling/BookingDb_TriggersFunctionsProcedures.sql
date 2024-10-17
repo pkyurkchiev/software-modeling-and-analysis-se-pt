@@ -129,7 +129,6 @@ AS
 BEGIN
     DECLARE @IsAvailable BIT;
 
-    -- Check for room availability
     IF EXISTS (
         SELECT 1
         FROM BookingManagement.Bookings b
@@ -139,11 +138,11 @@ BEGIN
         AND b.CheckOutDate > @CheckInDate
     )
     BEGIN
-        SET @IsAvailable = 0;  -- Room is not available
+        SET @IsAvailable = 0;
     END
     ELSE
     BEGIN
-        SET @IsAvailable = 1;  -- Room is available
+        SET @IsAvailable = 1;
     END
 
     RETURN @IsAvailable;

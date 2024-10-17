@@ -1,3 +1,6 @@
+USE BookingDB
+GO
+
 Insert into [BookingManagement].[BookingStatus] 
 values
 ('Pending'),
@@ -83,12 +86,12 @@ Insert into PropertyManagement.Rooms ([Name], QuantityRooms, PricePerNight, Room
 GO
 
 Insert into BookingManagement.Bookings(UserId, CheckInDate, CheckOutDate, NumberOfPeople, TotalAmount, BookingStatusId, PaymentMethodId, Discount) values 
-(1, '2024-11-05', '2024-11-10', 4, 500.00, 2 , 10),
-(1, '2024-10-25', '2024-10-27', 2, 900.00, 1 , 0),
-(2, '2024-12-01', '2024-12-10', 3, 450.00, 1 , 0),
-(5, '2024-11-15', '2024-11-20', 2, 600.00, 2 , 5),
-(6, '2024-12-05', '2024-12-12', 1, 350.00, 1 , 0),
-(7, '2024-11-10', '2024-11-15', 3, 450.00, 2 , 10)
+(1, '2024-11-05', '2024-11-10', 4, 500.00, 2 , 1,  10),
+(1, '2024-10-25', '2024-10-27', 2, 900.00, 1 , 2, 0),
+(2, '2024-12-01', '2024-12-10', 3, 450.00, 1 , 3, 0),
+(5, '2024-11-15', '2024-11-20', 2, 600.00, 2 , 4, 5),
+(6, '2024-12-05', '2024-12-12', 1, 350.00, 1 , 1, 0),
+(7, '2024-11-10', '2024-11-15', 3, 450.00, 2 , 2, 10)
 GO
 
 Insert into BookingManagement.BookingDetail(BookingId, RoomId, GuestName, TotalPrice) values
@@ -132,7 +135,6 @@ Insert into PropertyManagement.PropertyAmenities (PropertyId, AmenityId) values
 (3, 6) 
 GO
 
----- Insert Favourites
 Insert into UserManagement.Favorites(UserId, PropertyId)
 values 
 (1, 1),
@@ -141,9 +143,14 @@ values
 (4, 4)
 GO
 
----- Insert Airlines and Flights
 Insert into TransportManagement.Airlines (Name, Code)
-values ('WizzAir', 'WZ'), ('RyanAir', 'RA'), ('Bulgarian Air', 'BA'), ('EasyJet', 'EJ'), ('Turkish Airlines', 'TK'), ('Lufthansa', 'LH');
+values 
+('WizzAir', 'WZ'),
+('RyanAir', 'RA'), 
+('Bulgarian Air', 'BA'), 
+('EasyJet', 'EJ'), 
+('Turkish Airlines', 'TK'),
+('Lufthansa', 'LH')
 GO
 
 Insert into TransportManagement.Flights (AirlineId, FlightNumber, DepartureAirport, ArrivalAirport, DepartureTime, ArrivalTime, Price)
@@ -154,11 +161,11 @@ values
 (5, 'TK2020', 'IST', 'SOF', '2024-12-02 09:00:00', '2024-12-02 12:00:00', 450.00)
 GO
 
-Insert into BookingManagement.FlightBookings (UserId, FlightId, NumberOfPeople, TotalAmount, BookingStatusId)
+Insert into BookingManagement.FlightBookings (UserId, FlightId, NumberOfPeople, TotalAmount, BookingStatusId, PaymentMethodId)
 values 
-(3, 1, 1, 300.00, 2),
-(1, 3, 2, 800.00, 2),
-(4, 2, 1, 450.00, 1)
+(3, 1, 1, 300.00, 2, 1),
+(1, 3, 2, 800.00, 2, 2),
+(4, 2, 1, 450.00, 1, 3)
 GO
 
 Insert into TransportManagement.RentalCompanies (Name, Location, ContactInfo)
@@ -175,10 +182,10 @@ values
 (1, 'BMW', 'X5', 2022, 85.00, 0)
 GO
 
-Insert into TransportManagement.CarRentals (UserId, CarID, StartDate, EndDate, TotalAmount, RentalStatusId)
+Insert into TransportManagement.CarRentals (UserId, CarID, StartDate, EndDate, TotalAmount, RentalStatusId, PaymentMethodId)
 values 
-(1, 3, '2024-11-05', '2024-11-10', 225.00, 2),
-(2, 4, '2024-10-25', '2024-10-27', 300.00, 1)
+(1, 3, '2024-11-05', '2024-11-10', 225.00, 2, 1),
+(2, 4, '2024-10-25', '2024-10-27', 300.00, 1, 2)
 GO
 
 Insert into [HistoryManagement].[BookingPaymentHistory]
@@ -192,8 +199,8 @@ GO
 Insert into [HistoryManagement].[CarRentalPaymentHistory]
 (CarRentalId, AmountPaid, CreatedAt)
 values
-(3, 225.00, '2024-10-05'),
-(4, 300.00, '2024-10-15')
+(1, 225.00, '2024-10-05'),
+(2, 300.00, '2024-10-15')
 GO
 
 Insert into [HistoryManagement].[FlightBookingPaymentHistory]
@@ -205,7 +212,8 @@ GO
 Insert into [TransportManagement].[TaxiServices] ([Name], ContactInfo)
 values 
     ('Eco Taxi', '041 121 55'),
-    ('Budget Taxi', '043 234 91')
+    ('Budget Taxi', '043 234 91'),
+	('Wellow Taxi', '063 234 91')
 GO
 
 Insert into [BookingManagement].[TaxiBookings] 
