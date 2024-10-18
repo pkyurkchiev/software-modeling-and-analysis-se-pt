@@ -1,0 +1,168 @@
+CREATE DATABASE AmazonMarketplaceDB;
+USE AmazonMarketplaceDB;
+
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(255),
+    Email NVARCHAR(255),
+    Address NVARCHAR(255)
+);
+
+CREATE TABLE Seller (
+    SellerID INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(255),
+    Email NVARCHAR(255)
+);
+
+CREATE TABLE Category (
+    CategoryID INT PRIMARY KEY IDENTITY,
+    CategoryName NVARCHAR(255)
+);
+
+CREATE TABLE Product (
+    ProductID INT PRIMARY KEY IDENTITY,
+    ProductName NVARCHAR(255),
+    Price DECIMAL(10, 2),
+    SellerID INT FOREIGN KEY REFERENCES Seller(SellerID)
+);
+
+CREATE TABLE ProductCategory (
+    ProductID INT,
+    CategoryID INT,
+    PRIMARY KEY (ProductID, CategoryID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID),
+    FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+);
+
+CREATE TABLE [Order] (
+    OrderID INT PRIMARY KEY IDENTITY,
+    OrderDate DATE,
+    CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE OrderProduct (
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    PRIMARY KEY (OrderID, ProductID),
+    FOREIGN KEY (OrderID) REFERENCES [Order](OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);
+
+CREATE TABLE Shipment (
+    ShipmentID INT PRIMARY KEY IDENTITY,
+    ShipmentDate DATE,
+    OrderID INT UNIQUE FOREIGN KEY REFERENCES [Order](OrderID),
+    Status NVARCHAR(255)
+);
+
+CREATE TABLE Payment (
+    PaymentID INT PRIMARY KEY IDENTITY,
+    PaymentDate DATE,
+    Amount DECIMAL(10, 2),
+    OrderID INT UNIQUE FOREIGN KEY REFERENCES [Order](OrderID)
+);
+
+CREATE TABLE Review (
+    ReviewID INT PRIMARY KEY IDENTITY,
+    CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+    ProductID INT FOREIGN KEY REFERENCES Product(ProductID),
+    Rating INT,
+    ReviewText NVARCHAR(MAX)
+);
+
+
+CREATE PROCEDURE AddCustomer
+    @Name NVARCHAR(255),
+    @Email NVARCHAR(255),
+    @Address NVARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Customer (Name, Email, Address)
+    VALUES (@Name, @Email, @Address);
+END;
+
+
+CREATE PROCEDURE AddOrder
+    @CustomerID INT,
+    @OrderDate DATE
+AS
+BEGIN
+    INSERT INTO [Order] (CustomerID, OrderDate)
+    VALUES (@CustomerID, @OrderDate);
+END;
+
+
+CREATE FUNCTION GetOrderTotal (@OrderID INT)
+RETURNS DECIMAL(10, 2)
+AS
+BEGIN
+    DECLARE @Total DECIMAL(10, 2);
+    SELECT @Total = SUM(P.Price * OP.Quantity)
+    FROM OrderProduct OP
+    JOIN Product P ON OP.ProductID = P.ProductID
+    WHERE OP.OrderID = @OrderID;
+    
+    RETURN @Total;
+END;
+
+
+
+CREATE FUNCTION GetAverageProductRating (@ProductID INT)
+RETURNS DECIMAL(4, 2)
+AS
+BEGIN
+    DECLARE @AvgRating DECIMAL(4, 2);
+    SELECT @AvgRating = AVG(Rating)
+    FROM Review
+    WHERE ProductID = @ProductID;
+
+    RETURN @AvgRating;
+END;
+
+
+CREATE TRIGGER trg_NewOrder
+ON [Order]
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @OrderID INT;
+    SELECT @OrderID = INSERTED.OrderID FROM INSERTED;
+
+    INSERT INTO Shipment (OrderID, ShipmentDate, Status)
+    VALUES (@OrderID, GETDATE(), 'Pending');
+END;
+
+
+
+
+CREATE TRIGGER trg_NewReview
+ON Review
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @ProductID INT;
+    SELECT @ProductID = INSERTED.ProductID FROM INSERTED;
+
+    PRINT 'New review added for product ' + CAST(@ProductID AS NVARCHAR(255));
+END;
+
+
+
+INSERT INTO Customer (Name, Email, Address) VALUES ('Ivan Ivanov', 'ivan@example.com', 'Sofia, Bulgaria');
+INSERT INTO Customer (Name, Email, Address) VALUES ('Maria Petrova', 'maria@example.com', 'Plovdiv, Bulgaria');
+
+INSERT INTO Seller (Name, Email) VALUES ('Tech Shop', 'techshop@example.com');
+INSERT INTO Seller (Name, Email) VALUES ('Home Goods', 'homegoods@example.com');
+
+INSERT INTO Product (ProductName, Price, SellerID) VALUES ('Laptop', 1200.00, 1);
+INSERT INTO Product (ProductName, Price, SellerID) VALUES ('Coffee Maker', 80.00, 2);
+
+INSERT INTO Category (CategoryName) VALUES ('Electronics');
+INSERT INTO Category (CategoryName) VALUES ('Home Appliances');
+
+INSERT INTO ProductCategory (ProductID, CategoryID) VALUES (1, 1);
+INSERT INTO ProductCategory (ProductID, CategoryID) VALUES (2, 2);
+
+INSERT INTO [Order] (CustomerID, OrderDate) VALUES (1, GETDATE());
+INSERT INTO OrderProduct (OrderID, ProductID, Quantity) VALUES (1, 1, 1);
