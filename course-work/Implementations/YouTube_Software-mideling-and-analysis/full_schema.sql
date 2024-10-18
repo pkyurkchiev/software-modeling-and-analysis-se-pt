@@ -63,6 +63,7 @@ CREATE TABLE ContentManagement.Video
     Published        TIMESTAMP        NOT NULL,
     Duration         TIME             NOT NULL,
     Description      TEXT,
+    FOREIGN KEY (UserAccountEmail) REFERENCES UserManagement.UserAccount (Email),
     FOREIGN KEY (Genre) REFERENCES ContentManagement.Categories (Genre)
 );
 
@@ -83,6 +84,7 @@ CREATE TABLE ContentManagement.Likes
     UserAccountEmail VARCHAR(150) NOT NULL,
     isLiked          BOOLEAN,
     LikeDate         TIMESTAMP,
+    PRIMARY KEY (URL, UserAccountEmail),
     FOREIGN KEY (URL) REFERENCES ContentManagement.Video (URL),
     FOREIGN KEY (UserAccountEmail) REFERENCES UserManagement.UserAccount (Email)
 );
@@ -116,19 +118,18 @@ CREATE OR REPLACE PROCEDURE UserManagement.AddUser(
     IN p_FirstName VARCHAR(150),
     IN p_LastName VARCHAR(150),
     IN p_DateOfCreation TIMESTAMP,
-    IN p_PhoneNumber VARCHAR(15),
-    IN p_Subscribers BIGINT
+    IN p_PhoneNumber VARCHAR(15)
 )
 LANGUAGE plpgsql
 AS $$
 BEGIN
     INSERT INTO UserManagement.UserAccount
     (
-        Email, Username, Password, FirstName, LastName, DateOfCreation, PhoneNumber, Subscribers
+        Email, Username, Password, FirstName, LastName, DateOfCreation, PhoneNumber
     )
     VALUES
     (
-        p_Email, p_Username, p_Password, p_FirstName, p_LastName, p_DateOfCreation, p_PhoneNumber, p_Subscribers
+        p_Email, p_Username, p_Password, p_FirstName, p_LastName, p_DateOfCreation, p_PhoneNumber
     );
 END;
 $$;
@@ -188,8 +189,8 @@ CALL UserManagement.AddUser(
     'John',                  -- p_FirstName
     'Doe',                   -- p_LastName
     CURRENT_TIMESTAMP::TIMESTAMP,       -- p_DateOfCreation
-    '1234567890',            -- p_PhoneNumber
-    0                      -- p_Subscribers
+    '1234567890'         -- p_PhoneNumber
+
 );
 
 CALL ContentManagement.AddCategory (
@@ -209,35 +210,9 @@ CALL ContentManagement.AddVideo(
 
 ----------------------------------------------------------------------------------------------
 -- Functions
--- GetVideoDurationInMinutes
 -- GetTotalVideosByUser
 -- UpdateSubscribersOnInsert
 -- UpdateSubscribersOnDelete
-
-CREATE OR REPLACE FUNCTION ContentManagement.GetVideoDurationInMinutes(
-    p_URL TEXT
-)
-RETURNS INT
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    v_Duration TIME;
-    total_minutes INT;
-BEGIN
-
-    SELECT Duration INTO v_Duration
-    FROM ContentManagement.Video
-    WHERE URL = p_URL;
-
-    total_minutes := EXTRACT(EPOCH FROM (v_Duration - '00:00:00'::TIME)) / 60;
-
-    IF total_minutes >= 60 THEN
-        RETURN total_minutes % 60;
-    ELSE
-        RETURN total_minutes;
-    END IF;
-END;
-$$;
 
 CREATE OR REPLACE FUNCTION ContentManagement.GetTotalVideosByUser(
     p_UserAccountEmail VARCHAR(150)
@@ -301,7 +276,8 @@ EXECUTE FUNCTION UpdateSubscribersOnDelete();
 -- Insert information to tables
 -- Insert new user
 -- The first user John subscribes to new user Jane
--- After that Jane unsubscribes from John
+-- After that Jane subscribes to John
+-- In the end Jane unsubscribes from John
 
 INSERT INTO UserManagement.UserAccount (Email, Username, Password, FirstName, LastName, DateOfCreation, PhoneNumber, Subscribers)
 VALUES (
@@ -319,6 +295,10 @@ INSERT INTO UserManagement.Subscription (FromUserAccountEmail, ToUserAccountEmai
 VALUES
     ('john.doe@email.com', 'jane.smith@email.com', CURRENT_TIMESTAMP);
 
+INSERT INTO  UserManagement.Subscription (FromUserAccountEmail, ToUserAccountEmail, SubscriptionDate)
+VALUES
+    ('jane.smith@email.com', 'john.doe@email.com', CURRENT_TIMESTAMP);
+
 DELETE FROM UserManagement.Subscription
 WHERE FromUserAccountEmail = 'john.doe@email.com'
 AND ToUserAccountEmail = 'jane.smith@email.com';
@@ -333,7 +313,6 @@ AND ToUserAccountEmail = 'jane.smith@email.com';
 -- John and Alice leave comments to Jane's video
 -- John likes Jane video, Alice did not liked the video
 -- John and Jane insert their own videos to playlist, while Alice adds their (John and Jane) videos to her playlist
-
 
 
 -- Insert new user
@@ -380,7 +359,7 @@ VALUES
     ('https://youtu.be/jane_video_1', 'alice.wonderland@email.com', 'This list is awesome! I have to watch these shows.', CURRENT_TIMESTAMP);
 
 
--- John likes Jane video, Alice did not liked the video
+-- John likes Jane video, Alice does not liked the video
 INSERT INTO ContentManagement.Likes (URL, UserAccountEmail, isLiked, LikeDate)
 VALUES
     ('https://youtu.be/jane_video_1', 'john.doe@email.com', TRUE, CURRENT_TIMESTAMP),
@@ -394,6 +373,7 @@ VALUES
     ('Jane Favorites', 'jane.smith@email.com', 'https://youtu.be/jane_video_1'),
     ('Alice Top Videos', 'alice.wonderland@email.com', 'https://youtu.be/johns_video_1'),
     ('Alice Top Videos', 'alice.wonderland@email.com', 'https://youtu.be/jane_video_1');
+
 
 ----------------------------------------------------------------------------------------------
 
