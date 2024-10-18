@@ -25,8 +25,13 @@ CREATE TABLE [Users].[Users]
 
 INSERT INTO [Users].[Users]
 	(UserId, EMail, Username, Password)
-VALUES
-	
+VALUES 
+    ('petar.kostov@example.com', 'PetarKostov', CONVERT(BINARY(60), 'hashed_password_1')),
+    ('ivan.kadikyanov@example.com', 'IvanKadikyanov', CONVERT(BINARY(60), 'hashed_password_2')),
+    ('nedalin.bogdanov@example.com', 'NedalinBogdanov', CONVERT(BINARY(60), 'hashed_password_3')),
+    ('bozhidar.nikolov@example.com', 'BozhidarNikolov', CONVERT(BINARY(60), 'hashed_password_4')),
+    ('stefan.dimitrov@example.com', 'StefanDimitrov', CONVERT(BINARY(60), 'hashed_password_5'));
+
 GO
 --------------- Users.Users ---------------
 
@@ -48,7 +53,12 @@ CREATE TABLE [Creators].[Creators]
 
 INSERT INTO [Creators].[Creators]
 	(CreatorId, UserId, URL, Description)
-VALUES
+VALUES 
+    (1, 'petar_kostov_creator', 'Petar Kostov Art Studio'),
+    (2, 'ivan_kadikyanov_creator', 'Ivan Kadikyanov Photography'),
+    (3, 'nedalin_bogdanov_creator', 'Nedalin Bogdanov Digital Art'),
+    (4, 'bozhidar_nikolov_creator', 'Bozhidar Nikolov Craftwork'),
+    (5, 'stefan_dimitrov_creator', 'Stefan Dimitrov Music Studio');
 	
 GO
 --------------- Creators.Creators ----------------
@@ -69,7 +79,12 @@ CREATE TABLE [Creators].[ExternalPlatforms]
 
 INSERT INTO [Creators].[ExternalPlatforms]
 	(ExternalPlatformId, Name, PlatformURL, ApiURL, Icon)
-VALUES
+VALUES 
+    ('YouTube', 'https://youtube.com', 'https://api.youtube.com', 'https://icon.com/youtube'),
+    ('Twitter', 'https://twitter.com', 'https://api.twitter.com', 'https://icon.com/twitter'),
+    ('Instagram', 'https://instagram.com', 'https://api.instagram.com', 'https://icon.com/instagram'),
+    ('Twitch', 'https://twitch.tv', 'https://api.twitch.tv', 'https://icon.com/twitch'),
+    ('Facebook', 'https://facebook.com', 'https://api.facebook.com', 'https://icon.com/facebook');
 	
 GO
 --------------- Creators.ExternalPlatforms ----------------
@@ -90,7 +105,12 @@ CREATE TABLE [Creators].[ExternalProfiles]
 
 INSERT INTO [Creators].[ExternalProfiles]
 	(ExternalPlatformId, CreatorId, ProfileURL, Token)
-VALUES
+VALUES 
+    (1, 1, 'https://youtube.com/petarkostov', 'token_1'),
+    (2, 2, 'https://twitter.com/ivankadikyanov', 'token_2'),
+    (3, 3, 'https://instagram.com/nedalinbogdanov', 'token_3'),
+    (4, 4, 'https://twitch.tv/bozhidarnikolov', 'token_4'),
+    (5, 5, 'https://facebook.com/stefandimitrov', 'token_5');
 
 GO
 --------------- Creators.ExternalProfiles ----------------
@@ -112,7 +132,12 @@ CREATE TABLE [Subscriptions].[SubscriptionTiers]
 
 INSERT INTO [Subscriptions].[SubscriptionTiers]
 	(SubscriptionTierId, CreatorId, Name, IsBilledPerUpload, SubscriverCountLimit)
-VALUES
+VALUES 
+    (1, 'Basic Support', 0, NULL),
+    (2, 'Gold Membership', 0, 100),
+    (3, 'Silver Tier', 1, 50),
+    (4, 'VIP Access', 0, 10),
+    (5, 'Premium Content', 1, 25);
 	
 GO
 --------------- Subscriptions.Tiers ---------------
@@ -137,7 +162,12 @@ CREATE TABLE [Subscriptions].[Subscriptions]
 
 INSERT INTO [Subscriptions].[Subscriptions]
 	(SubscriptionId, UserId, CreatorId, SubscriptionTierId, Active, CustomPledge, MaxMonthlyCost)
-VALUES
+VALUES 
+    (1, 1, 1, 1, 15.00, NULL),
+    (2, 2, 2, 1, 25.00, NULL),
+    (3, 3, 3, 1, 35.00, 100.00),
+    (4, 4, 4, 1, 50.00, NULL),
+    (5, 5, 5, 1, 100.00, 200.00);
 	
 GO
 --------------- Subscriptions.Subscriptions ---------------
@@ -161,7 +191,12 @@ CREATE TABLE [Subscriptions].[MonthlySubscriptionPayouts]
 
 INSERT INTO [Subscriptions].[MonthlySubscriptionPayouts]
 	(MonthlySubscriptionPayoutId, UserId, CreatorId, SubscriptionId, Amount, [Date])
-VALUES
+VALUES 
+    (1, 1, 1, 15.00, '2024-10-01'),
+    (2, 2, 2, 25.00, '2024-10-01'),
+    (3, 3, 3, 35.00, '2024-10-01'),
+    (4, 4, 4, 50.00, '2024-10-01'),
+    (5, 5, 5, 100.00, '2024-10-01');
 	
 GO
 --------------- Subscriptions.MonthlySubscriptionPayouts ---------------
@@ -180,7 +215,12 @@ CREATE TABLE [Content].[ContentTypes]
 
 INSERT INTO [Content].[contentTypes]
 	(ContentTypeId, Name, Description)
-VALUES
+VALUES 
+    ('Video', 'Video content for subscribers.'),
+    ('Music', 'Music tracks available for download.'),
+    ('Blog', 'Exclusive blog posts.'),
+    ('Tutorial', 'How-to tutorials.'),
+    ('Artwork', 'Digital artwork for download.');
 	
 GO
 --------------- Content.ContentTypes ---------------
@@ -203,7 +243,12 @@ CREATE TABLE [Content].[Content]
 
 INSERT INTO [Content].[Content]
 	(ContentId, CreatorId, Title, Description, Price)
-VALUES
+VALUES 
+    (1, 'Art Video', 'A deep dive into modern art.', 1, 10.00),
+    (2, 'Photography Tutorial', 'Learn advanced photography techniques.', 4, 20.00),
+    (3, 'Digital Art Piece', 'High-resolution digital artwork.', 5, 15.00),
+    (4, 'Crafting Blog', 'Tips and tricks for handmade crafts.', 3, NULL),
+    (5, 'Music Album', 'Exclusive music album release.', 2, 30.00);
 	
 GO
 --------------- Content.Content ---------------
@@ -222,7 +267,12 @@ CREATE TABLE [Content].[SubscriptionTierContent]
 
 INSERT INTO [Content].[Content]
 	(ContentId, SubscriptionTierId)
-VALUES
+VALUES 
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5);
 	
 GO
 --------------- Content.SubscriptionTierContent ---------------
@@ -249,7 +299,12 @@ CREATE TABLE [Content].[Purchases]
 
 INSERT INTO [Content].[Purchases]
 	(UserId, CreatorId, ContentId, SubscriptionId, Price, [DateTime])
-VALUES
+VALUES 
+    (1, 1, 1, 1, 0, '2024-10-01'),
+    (2, 2, 2, 2, 20.00, '2024-10-02'),
+    (3, 3, 3, 3, 15.00, '2024-10-03'),
+    (4, 4, 4, NULL, 0, '2024-10-04'),
+    (5, 5, 5, 5, 30.00, '2024-10-05');
 	
 GO
 --------------- Content.Purchases ---------------
