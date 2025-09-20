@@ -16,7 +16,7 @@ GO
 CREATE SCHEMA Clients
 GO
 
-CREATE SCHEMA Resources
+CREATE SCHEMA Currencies
 GO
 
 ------------ Banks.Banks ------------
@@ -46,8 +46,8 @@ VALUES
     ('REVOGB2LXXX' , 'REVOLUT LTD', 'EU Revolut', 'AAA', 240000000);
 ------------ Banks.Banks ------------
 
------------- Resources.Currencies ------------
-CREATE TABLE [Resources].[Currencies]
+------------ Currencies.Currencies ------------
+CREATE TABLE [Currencies].[Currencies]
 (
     CurrencyId INT IDENTITY(1, 1) NOT NULL,
     Code VARCHAR(3) NOT NULL,
@@ -61,15 +61,15 @@ EXEC sys.sp_addextendedproperty
     @name=N'TableDescription',
     @value=N'Table is used for storing currency information.',
     @level0type=N'SCHEMA',
-    @level0name=N'Resources',
+    @level0name=N'Currencies',
     @level1type=N'TABLE',
     @level1name=N'Currencies';
 
-INSERT INTO [Resources].[Currencies]
+INSERT INTO [Currencies].[Currencies]
     (Code, Name)
 VALUES
     ('BGN', 'lev');
------------- Resources.Currencies ------------
+------------ Currencies.Currencies ------------
 
 
 ------------ Accounts.AccountTypes ------------
@@ -215,7 +215,7 @@ CREATE TABLE [Accounts].[Accounts]
     CONSTRAINT FK_Accouts_Banks_BankId FOREIGN KEY(BankId) REFERENCES Banks.Banks(BankId),
     CONSTRAINT FK_Accouts_Clients_ClientId FOREIGN KEY(ClientId) REFERENCES Clients.Clients(ClientId),
     CONSTRAINT FK_Accouts_AccountTypes_AccountTypeId FOREIGN KEY(AccountTypeId) REFERENCES Accounts.AccountTypes(AccountTypeId),
-    CONSTRAINT FK_Accouts_Resources_CurrencyId FOREIGN KEY(CurrencyId) REFERENCES Resources.Currencies(CurrencyId),
+    CONSTRAINT FK_Accouts_Currencies_CurrencyId FOREIGN KEY(CurrencyId) REFERENCES Currencies.Currencies(CurrencyId),
     CONSTRAINT FK_Accouts_Cards_CardId FOREIGN KEY(CardId) REFERENCES Cards.Cards(CardId),
 );
 
@@ -269,7 +269,7 @@ CREATE TABLE [Accounts].[Transactions]
     [State] TINYINT NOT NULL CONSTRAINT DF_Transactions_State DEFAULT 1,
     CONSTRAINT PK_Transactions_TransactionId PRIMARY KEY(TransactionId),
     CONSTRAINT FK_Transactions_Accounts_AccountId FOREIGN KEY(AccountId) REFERENCES Accounts.Accounts(AccountId),
-    CONSTRAINT FK_Accouts_Resources_CurrencyId FOREIGN KEY(CurrencyId) REFERENCES Resources.Currencies(CurrencyId),
+    CONSTRAINT FK_Accouts_Currencies_CurrencyId FOREIGN KEY(CurrencyId) REFERENCES Currencies.Currencies(CurrencyId),
 );
 
 
