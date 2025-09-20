@@ -184,7 +184,7 @@ BEGIN
     )
     BEGIN
         -- Throw a proper error instead of using PRINT and ROLLBACK
-        THROW 50001, 'Cannot delete card(s): One or more cards are still valid and have not expired.', 1;
+        RAISERROR('Cannot delete card(s): One or more cards are still valid and have not expired.', 16, 1);
         RETURN;
     END
     
