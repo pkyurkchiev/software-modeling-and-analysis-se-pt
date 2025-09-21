@@ -69,8 +69,9 @@ INSERT INTO [Currencies].[Currencies]
     (Code, Name)
 VALUES
     ('BGN', 'lev'),
+    ('EUR', 'euro'),
     ('USD', 'dollar'),
-    ('EUR', 'euro');
+    ('GBP', 'pound sterling');
 ------------ Currencies.Currencies ------------
 
 
@@ -314,10 +315,123 @@ BEGIN
     SELECT
         aa.IBAN AS SenderIban,
         t.ReciverIban,
-        t.Amount,
+        CASE WHEN cc.Code = 'BGN' THEN t.Amount
+        	ELSE [Currencies].[F_AmountToCurrency](t.Amount, cc.Code, CAST(t.CreatedOn AS DATE), 1)
+    	END Amount,
         t.CreatedOn
     FROM [Accounts].[Transactions] AS t
         INNER JOIN [Accounts].[Accounts] AS aa ON t.AccountId = aa.AccountId
     WHERE aa.AccountId = @iAccountId AND aa.[State] = 1;
 END
 ------------ SP ------------
+
+----------------- Currencies.ExchangeRates	 -----------------
+CREATE TABLE [Currencies].[ExchangeRates]
+(
+	CurrencyId INT NOT NULL,
+	ExchangeDate DATE NOT NULL,
+	Buy FLOAT NOT NULL CONSTRAINT DF_ExchangeRates_Buy DEFAULT 1,
+	Sell FLOAT NOT NULL CONSTRAINT DF_ExchangeRates_Sell DEFAULT 1,
+	CONSTRAINT FK_Currencies_ExchanteRages_CurrencyId FOREIGN KEY (CurrencyId) REFERENCES Currencies.Currencies(CurrencyId),
+	INDEX IX_ExchangeRates_CurrencyId_ExchangeDate NONCLUSTERED (CurrencyId, ExchangeDate)
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'TableDescription',
+    @value=N'Table is used for storing currency exchange rates information.',
+    @level0type=N'SCHEMA',
+    @level0name=N'Currencies',
+    @level1type=N'TABLE',
+    @level1name=N'ExchangeRates';
+
+INSERT INTO [Currencies].[ExchangeRates]
+	([CurrencyId]
+	,[ExchangeDate]
+	,[Sell]
+	,[Buy])
+VALUES
+	(4, convert(date,'02.09.2024', 104), 2.32234, 0.4306)
+	,
+	(4, convert(date,'03.09.2024', 104), 2.32602, 0.429919)
+	,
+	(4, convert(date,'04.09.2024', 104), 2.32152, 0.430752)
+	,
+	(4, convert(date,'05.09.2024', 104), 2.31959, 0.431111)
+	,
+	(4, convert(date,'06.09.2024', 104), 2.31959, 0.431111)
+	,
+	(4, convert(date,'07.09.2024', 104), 2.31959, 0.431111)
+	,
+	(4, convert(date,'08.09.2024', 104), 2.31959, 0.431111)
+	,
+	(4, convert(date,'09.09.2024', 104), 2.3183, 0.431351)
+	,
+	(4, convert(date,'10.09.2024', 104), 2.32105, 0.430839)
+	,
+	(3, convert(date,'02.09.2024', 104), 1.76822, 0.56554)
+	,
+	(3, convert(date,'03.09.2024', 104), 1.77239, 0.56421)
+	,
+	(3, convert(date,'04.09.2024', 104), 1.76998, 0.564978)
+	,
+	(3, convert(date,'05.09.2024', 104), 1.76249, 0.567379)
+	,
+	(3, convert(date,'06.09.2024', 104), 1.76249, 0.567379)
+	,
+	(3, convert(date,'07.09.2024', 104), 1.76249, 0.567379)
+	,
+	(3, convert(date,'08.09.2024', 104), 1.76249, 0.567379)
+	,
+	(3, convert(date,'09.09.2024', 104), 1.7711, 0.564621)
+	,
+	(3, convert(date,'10.09.2024', 104), 1.77303, 0.564006)
+GO
+----------------- Currencies.ExchangeRates -----------------
+
+----------------- Function  --------------------
+CREATE FUNCTION [Currencies].[F_AmountToCurrency]
+(
+	@iAmount MONEY,
+	@iCurrencyCode VARCHAR(3) = 'EUR',
+	@iExchangeDate DATE = GETDATE,
+	@iExchangeAction BIT = 0 -- 0 - SELL, 1 - BUY
+)
+RETURNS MONEY
+AS
+BEGIN
+	DECLARE @oAmount MONEY = 0;
+
+	SELECT @oAmount = CASE @iExchangeAction
+    	WHEN 0 THEN er.Sell * @iAmount
+    	ELSE er.Buy * @iAmount
+	END
+	FROM [Currencies].[ExchangeRates] AS er
+    	LEFT JOIN [Currencies].[Currencies] AS cc ON cc.CurrencyId = er.CurrencyId
+	WHERE cc.Code = @iCurrencyCode AND er.ExchangeDate = @iExchangeDate;
+
+	RETURN @oAmount;
+END
+GO
+----------------- Function  --------------------
+
+----------------- View  ------------
+CREATE VIEW [Cards].[VW_CardsGet] AS
+SELECT uu.FirstName
+, uu.LastName
+, c.PermanentAccountNumber
+, c.ValidationDate
+, a.Balance
+, cc.Code
+, t.[Name] AS AccountType
+FROM [Cards].[Cards] AS c
+INNER JOIN [Accounts].[Accounts] AS a ON c.CardId = a.CardId AND a.State = 1
+INNER JOIN [Accounts].[AccountTypes] AS t ON a.AccountTypeId = t.AccountTypeId
+INNER JOIN [Users].[Clients] as uc ON uc.ClientId = a.ClientId
+INNER JOIN [Users].[Users] as uu ON uc.UserId = uu.UserId
+INNER JOIN [Currencies].[Currencies] as cc ON a.CurrencyId = cc.CurrencyId
+WHERE c.State = 1;
+GO
+
+SELECT * FROM [Cards].[VW_CardsGet]
+----------------- View  ------------
