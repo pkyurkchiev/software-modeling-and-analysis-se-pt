@@ -1,0 +1,22 @@
+DELIMITER //
+
+CREATE FUNCTION GetMostLikedComment()
+RETURNS TEXT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE most_liked_comment INT;
+
+    RETURN (SELECT Content FROM USER_COMMENT ORDER BY Likes LIMIT 1);
+END //
+
+CREATE FUNCTION PostsCount()
+RETURNS INT
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    RETURN (SELECT COUNT(*) FROM POST);
+END //
+
+-- Usage example
+-- SELECT GetMostLikedComment() as 'Most liked comment';
